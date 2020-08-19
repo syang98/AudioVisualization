@@ -6,12 +6,16 @@ let express = require('express');
 let cors = require('cors');
 let querystring = require('querystring');
 let cookieParser = require('cookie-parser');
-let request = require('request');
 let fetch = require('node-fetch');
 
 var client_id = config.id; // Your client id
 var client_secret = config.secret; // Your secret
 var redirect_uri = config.uri; // Your redirect uri
+
+var tokens = {
+  "access_token": "None yet",
+  "refresh_token": "None yet"
+};
 
 /**
  * Generates a random string containing numbers and letters
@@ -31,13 +35,10 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 var app = express();
-
-app.use(express.static(__dirname + '/public'))
-   .use(cors())
+app.use(cors())
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
-
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 
@@ -54,7 +55,6 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/callback', async function(req, res) {
-
   // your application requests refresh and access tokens
   // after checking the state parameter
 
@@ -92,29 +92,25 @@ app.get('/callback', async function(req, res) {
                     error: 'invalid_token'
                     }))))
     
+    
     var access_token = response.access_token;
     var refresh_token = response.refresh_token;
 
-    var getOptions = {
-        headers: { 'Authorization': 'Bearer ' + access_token }
-    };
+    tokens.access_token = access_token;
+    tokens.refresh_token = refresh_token;
+    res.redirect('http://localhost:3000/');
 
-    var apiResponse = await fetch('https://api.spotify.com/v1/me', getOptions)
-            .then(result => result.json())
-            .then(result  => console.log(result))
-
-    res.redirect('http://localhost:3000/#' + 
-        querystring.stringify({
-        access_token: access_token,
-        refresh_token: refresh_token
-    }));
   }
 });
+
+app.get('/tokens', function(req, res) {
+  res.json(tokens)
+}) 
 
 app.get('/refresh_token', async function(req, res) {
 
   // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
+  var refresh_token = tokens.refresh_token;
   var authParams = new URLSearchParams();
   authParams.append('grant_type', 'refresh_token');
   authParams.append('refresh_token', refresh_token);
