@@ -103,7 +103,7 @@ app.get('/callback', async function(req, res) {
             .then(result => result.json())
             .then(result  => console.log(result))
 
-    res.redirect('/#' + 
+    res.redirect('http://localhost:3000/#' + 
         querystring.stringify({
         access_token: access_token,
         refresh_token: refresh_token
@@ -111,27 +111,26 @@ app.get('/callback', async function(req, res) {
   }
 });
 
-app.get('/refresh_token', function(req, res) {
+app.get('/refresh_token', async function(req, res) {
 
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
+  var authParams = new URLSearchParams();
+  authParams.append('grant_type', 'refresh_token');
+  authParams.append('refresh_token', refresh_token);
   var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
     headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
+    body: authParams,
+    mode: 'cors',
+    method: 'POST'
   };
 
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
+  var response = await fetch('https://accounts.spotify.com/api/token', authOptions)
+                  .then(result => result.json())
+                  .catch(e => console.log(e));
+  var new_token = response.access_token;
+  res.send({
+    'access_token': new_token
   });
 });
 

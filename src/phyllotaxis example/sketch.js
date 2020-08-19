@@ -71,6 +71,14 @@ function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
 }
 
+function togglePlay() {
+    if (sound.isPlaying()) {
+      sound.pause();
+    } else {
+      sound.loop();
+    }
+}
+
 
 
 

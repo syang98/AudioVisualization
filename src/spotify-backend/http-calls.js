@@ -1,5 +1,4 @@
 const http = require('http');
-const config = require('./config');
 function apiCall(options) {
     return new Promise((resolve, reject) => {
         var req = http.request(options, (res) => {
