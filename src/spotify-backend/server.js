@@ -35,7 +35,7 @@ app.use(cors())
 app.get('/login', function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope = 'user-read-private user-read-email';
+  var scope = 'user-read-private user-read-playback-state user-modify-playback-state';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -65,7 +65,6 @@ app.get('/callback', async function(req, res) {
     params.append('grant_type', 'authorization_code')
    
     var options = {
-      url: 'https://accounts.spotify.com/api/token',
       body: params,
       headers: {
         'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
@@ -81,12 +80,13 @@ app.get('/callback', async function(req, res) {
                     error: 'invalid_token'
                     }))))
     
-    var access_token = response.access_token;
-    var refresh_token = response.refresh_token;
-    res.cookie('access_token', access_token);
-    res.cookie('refresh_token',refresh_token);
+    // TODO: for now keep as is, but once things are getting ready for something beyond local development
+    //       use localStorage solution with html page with tokens, ok for now
+    //       will require some research to figure out registering domains/deployment ok with this for now 
+    //       look into this: https://github.com/JMPerez/passport-spotify
+    res.cookie('access_token', response.access_token);
+    res.cookie('refresh_token',response.refresh_token);
     res.redirect('http://localhost:3000/');
-
   }
 });
 
