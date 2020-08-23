@@ -84,12 +84,13 @@ export default class MusicInfo extends Component{
   }
 
   render() { return (
-    <body>
+    <div>
       <div className='banner'>
         <h1 style={{verticalAlign: 'middle'}}>
           TODO: put in links for p5 sketches
         </h1>
       </div>
+      <div className='background'></div>
       <div className='container'>
         <div>
           Currently playing: {this.state.nowPlaying.name}
@@ -98,7 +99,7 @@ export default class MusicInfo extends Component{
           <img src= {this.state.nowPlaying.image} style={{ width: 175}}></img>
         </div>
       </div>
-    </body>
+    </div>
       
     );
   }

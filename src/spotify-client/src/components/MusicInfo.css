@@ -10,6 +10,13 @@
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     }
 
+.background{
+    position: absolute;
+    width: 100%;
+    top: 80px;
+    height: 100%;
+    background: black
+}
 
 .container {
     position: absolute;
@@ -19,4 +26,5 @@
     transform: translateY(-100%);
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 14px;
+    color: white;
 }
