@@ -1,0 +1,22 @@
+.banner{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    background: #1DB954;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
+
+
+.container {
+    position: absolute;
+    top: 100%;
+    -moz-transform: translateY(-100%);
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 14px;
+}
