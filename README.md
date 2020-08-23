@@ -1,2 +1,4 @@
 # AudioVisualization
-Personal Project
+
+## Description
+This project visualizes music using the p5.js sound library. Developed using Express.js, Node.js, React, and the Spotify Web Api.
