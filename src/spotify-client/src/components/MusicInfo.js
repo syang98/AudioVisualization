@@ -1,6 +1,9 @@
 import React, { Component } from '../../node_modules/react';
 import Cookies from '../../node_modules/js-cookie';
 import './MusicInfo.css';
+//import P5Wrapper from 'react-p5-wrapper';
+
+// import sketch from '../visuals/phyllotaxis-example/sketch'
 
 export default class MusicInfo extends Component{
   constructor() {
@@ -50,16 +53,17 @@ export default class MusicInfo extends Component{
       }
     }
     fetch('https://api.spotify.com/v1/me/player/currently-playing', options)
-      .catch(response => {
+      .then(response => {
         if (response.status === 401) {
-          fetch('http://localhost:8888/refresh_token')
+          fetch('http://localhost:8888/refresh_token?refresh_token='+this.state.refresh_token)
+            .then(response => response.json())
             .then(response => {
               this.setState({
-                nowPlaying: {
                   access_token: response.access_token
-                }
-              });
-            });
+                });
+            }); 
+        } else{
+          return response
         }
       })
       .then(response => response.json())
@@ -80,10 +84,12 @@ export default class MusicInfo extends Component{
           });
         } 
       })
-      .catch(e => console.log(e));  
+      .catch(error => console.log(error))
+       
   }
 
   render() { return (
+      
     <div>
       <div className='banner'>
         <h1 style={{verticalAlign: 'middle'}}>
@@ -93,10 +99,10 @@ export default class MusicInfo extends Component{
       <div className='background'></div>
       <div className='container'>
         <div>
-          Currently playing: {this.state.nowPlaying.name}
+          {this.state.nowPlaying.name}
         </div>
         <div>
-          <img src= {this.state.nowPlaying.image} style={{ width: 175}}></img>
+          <img src= {this.state.nowPlaying.image} style={{ width: 200}}></img>
         </div>
       </div>
     </div>

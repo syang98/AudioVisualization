@@ -93,6 +93,7 @@ app.get('/callback', async function(req, res) {
 
 app.get('/refresh_token', async function(req, res) {
   var refresh_token = req.query.refresh_token;
+  console.log("BUG "+refresh_token);
   var authParams = new URLSearchParams();
   authParams.append('grant_type', 'refresh_token');
   authParams.append('refresh_token', refresh_token);
@@ -105,7 +106,7 @@ app.get('/refresh_token', async function(req, res) {
 
   var response = await fetch('https://accounts.spotify.com/api/token', authOptions)
                   .then(result => result.json())
-                  .catch(e => console.log(e));
+                  .catch(e => "server-side error"+ console.log(e));
   var new_token = response.access_token;
   res.send({
     'access_token': new_token

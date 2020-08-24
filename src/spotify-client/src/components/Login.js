@@ -10,7 +10,7 @@ export default class Login extends Component {
           <h1>Name TBD</h1>
         </div>
         <div className = 'button-wrapper'>
-          A Spotify Visualizer
+          Spotify Visualizer
           <div className="container">
             <a href='http://localhost:8888/login'>
             <button className="button">
@@ -22,7 +22,7 @@ export default class Login extends Component {
             </a>
           </div>
         </div>
-      </div>  
+      </div>   
         );   
     }
 }
