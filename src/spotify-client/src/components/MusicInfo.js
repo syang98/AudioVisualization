@@ -1,9 +1,6 @@
-import React, { Component } from '../../node_modules/react';
-import Cookies from '../../node_modules/js-cookie';
+import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import './MusicInfo.css';
-//import P5Wrapper from 'react-p5-wrapper';
-
-// import sketch from '../visuals/phyllotaxis-example/sketch'
 
 export default class MusicInfo extends Component{
   constructor() {
@@ -13,23 +10,33 @@ export default class MusicInfo extends Component{
       refresh_token: Cookies.get('refresh_token'),
       nowPlaying: {
           name: 'Not playing any music',
-          image: " "
+          image: " ",
+          id: " ",
+          isPlaying: false,
+          progress: ' '
       }
     }
+    this.songData = ''
     this.tick = this.tick.bind(this); 
     this.getPlayState = this.getPlayState.bind(this); 
+    this.getMusicAnalysis = this.getMusicAnalysis.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextStates){
     if (nextStates.nowPlaying.name === this.state.nowPlaying.name){
       return false
     }
-    this.getPlayState();
     return true
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 2000);
+    this.interval = setInterval(() => this.tick(), 1000);
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if (prevState.nowPlaying.name !== this.state.nowPlaying.name){
+      this.getMusicAnalysis();
+    }
   }
 
   tick() {
@@ -38,6 +45,25 @@ export default class MusicInfo extends Component{
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+
+  /**
+   * make API call to spotify to get music analysis json object for visualizer
+   */
+  getMusicAnalysis() {
+    var options = {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer "+this.state.access_token,
+      }
+    }
+    if (this.state.nowPlaying.id){
+      fetch("https://api.spotify.com/v1/audio-analysis/"+this.state.nowPlaying.id, options)
+        .then(response => response.json())
+        .then(response => this.songData = response)
+        .catch(e => console.log(e))
+    }
   }
 
 
@@ -72,21 +98,28 @@ export default class MusicInfo extends Component{
           this.setState({
             nowPlaying: {
               name: response.item.name,
-              image: response.item.album.images[0].url
+              image: response.item.album.images[0].url,
+              id: response.item.id,
+              isPlaying: response.is_playing, 
+              progress: response.progress_ms
+
             }
           });
         } else {
           this.setState({
             nowPlaying: {
               name: "Not playing any music",
-              image: " "
+              image: " ",
+              id: ' ',
+              isPlaying: false,
+              progress: " "
             }
           });
         } 
       })
-      .catch(error => console.log(error))
-       
+      .catch(error => console.log(error))      
   }
+
 
   render() { return (
       

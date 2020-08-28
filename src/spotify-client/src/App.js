@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './components/Login'
 import MusicInfo from './components/MusicInfo'
-import Cookies from '../node_modules/js-cookie'
+import Cookies from 'js-cookie'
 
 export default class App extends Component {
     constructor() {
