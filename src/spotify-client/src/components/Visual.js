@@ -50,7 +50,6 @@ export default class Visual extends Component {
     draw(){
         const canvas = this.canvasRef.current;
         const context = canvas.getContext('2d');
-        console.log(this.props.color+ "WHY");
         rectangle(250, 200, canvas, context);
 
     }
@@ -58,7 +57,6 @@ export default class Visual extends Component {
     render() {
         return (
           <div>
-              FUCK THIS
             <canvas ref={this.canvasRef}/>
           </div>
         );
