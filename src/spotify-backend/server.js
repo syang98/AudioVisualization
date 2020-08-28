@@ -92,8 +92,8 @@ app.get('/callback', async function(req, res) {
 
 
 app.get('/refresh_token', async function(req, res) {
+  console.log("refreshing access token");
   var refresh_token = req.query.refresh_token;
-  console.log("BUG "+refresh_token);
   var authParams = new URLSearchParams();
   authParams.append('grant_type', 'refresh_token');
   authParams.append('refresh_token', refresh_token);

@@ -7,7 +7,7 @@ import Visual from './components/Visual'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <Visual/>
   </React.StrictMode>,
   document.getElementById('root')
 );

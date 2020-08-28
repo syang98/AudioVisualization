@@ -19,8 +19,9 @@
 //          if the goal is to change color on this, not sure how to do this rn
 //          literally just change if the beat val is different? hmmmmm maybe
 
-import React, { useRef, useEffect, Component } from 'react'
-import rectangle from '../util/draw'
+import React, { useRef, useEffect, Component } from 'react';
+import rectangle from '../util/draw';
+import './Visual.css'
 
 export default class Visual extends Component {
     constructor(){
@@ -28,55 +29,39 @@ export default class Visual extends Component {
         this.canvasRef = React.createRef();
         this.tick = this.tick.bind(this);
         this.draw = this.draw.bind(this);
+       
 
     }
+
+    // shouldComponentUpdate(nextProps, nextStates){
+    //     if (nextProps.color === this.props.color){
+    //       return false
+    //     }
+    //     return true
+    //   }
     componentDidMount() {
-        
         this.interval = setInterval(() => this.tick(), 1000);
       }
 
     tick() {
-        this.draw()
-        
+        this.draw()    
     }
 
     draw(){
         const canvas = this.canvasRef.current;
         const context = canvas.getContext('2d');
-        rectangle(100, 100, canvas, context);
+        console.log(this.props.color+ "WHY");
+        rectangle(250, 200, canvas, context);
 
     }
 
     render() {
         return (
           <div>
-            <canvas ref={this.canvasRef} />
+              FUCK THIS
+            <canvas ref={this.canvasRef}/>
           </div>
         );
       }
 }
 
-// const Visual = props => {
-  
-//   const canvasRef = useRef(null)
-  
-//   const draw = ctx => {
-//     ctx.fillStyle = '#000000'
-//     ctx.beginPath()
-//     ctx.arc(50, 100, 20, 0, 2*Math.PI)
-//     ctx.fill()
-//   }
-  
-//   useEffect(() => {
-    
-//     const canvas = canvasRef.current
-//     const context = canvas.getContext('2d')
-    
-//     //Our draw come here
-//     draw(context)
-//   }, [draw])
-  
-//   return <canvas ref={canvasRef} {...props}/>
-// }
-
-// export default Visual
