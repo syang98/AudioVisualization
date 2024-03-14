@@ -10,7 +10,7 @@
     "p5": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-native": "^0.63.2",
+    "react-native": "^0.64.1",
     "react-p5-wrapper": "^2.3.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
